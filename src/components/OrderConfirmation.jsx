@@ -1,56 +1,54 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Swal from "sweetalert2";
 
-function OrderConfirmation({ order }){
+function OrderConfirmation({order}) {
+  useEffect(() => {
+    if ({order}) {
+      Swal.fire(
+        `Thank you for your order! ${order.name}`,
+        "Please confirm this order on this page",
+        "success"
+      );
+    }
+  },[order]);
 
-        useEffect(() => {
-            if (order) {
-              Swal.fire(
-                `Thank you for your order! ${order.name}`,
-                "Please confirm this order on this page",
-                "success"
-              );
-            }
-          }, [order]);
-        
-    return (
-       
-          <div className="container"> 
-            <div>  
-                <h3 className="text-center mb-5"> Order Confirmation </h3>
-            </div>
-            <table className="table table-sm">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>Phone</th>
-                        <th>Items</th>
-                        <th>Order Id</th>
-
-                    </tr>
-                </thead>
-                <tbody>     
-                     <tr>
-                        <td> Name: {order.name}</td>    
-                        <td>Address: {order.address}</td>
-                        <td>Phone: {order.phone}</td>
-                        <td> Items:           
-                            {/* <ul> */}
-                            {order && order.items.map((item) => (
-                                <li key={item.item.id}>
-                                    {item.item.name} {item.quantity}
-                                </li>
-                            ))} 
-                            {/* </ul>     */}
-                        </td>   
-                        <td>Order id : {order.id}</td>
-                     </tr>                            
-                </tbody>
-               </table>
-            </div>                    
-    );
-
+  return (
+    <div className="container">
+      <div>
+        <h3 className="text-center mb-5"> Order Confirmation </h3>
+      </div>
+      <table className="table table-sm">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Items</th>
+            <th>Order Id</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Name:{order.name}</td>
+            <td>Address:{order.address}</td>
+            <td>Phone:{order.phone}</td>
+            <td>
+              {" "}
+              Items:
+              {/* <ul> */}
+              {order && order.items.map((item) => (
+                  <li key={item.item.id}>
+                    {item.item.name} {item.quantity}
+                  </li>
+                ))}
+              {/* </ul>     */}
+            </td>
+            <td>Order id:{order.id}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
 }
- 
+
 export default OrderConfirmation;

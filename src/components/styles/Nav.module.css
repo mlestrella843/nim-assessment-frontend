@@ -1,7 +1,7 @@
 .navLink {
   color: var(--secondary-text);
   font-size: 1.2rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s ease-in-out;

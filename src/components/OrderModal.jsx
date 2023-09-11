@@ -8,7 +8,7 @@ function OrderModal({ order, setOrderModal }) {
   const [address, setAddress] = useState("");
 
   const navigate = useNavigate();
- 
+
   const placeOrder = async () => {
     const response = await fetch("/api/orders", {
       method: "POST",
@@ -22,21 +22,29 @@ function OrderModal({ order, setOrderModal }) {
         items: order
       })
     });
-      const data = await response.json();
-      console.log(data);
-     
-      if (response.status === 200) {
-        try {
-          navigate(`/order-confirmation/${data.id}`);
-          console.log("Order placed!");
-        } catch (error) {
-          console.error("Error parsing response data:", error);
-        }
-      } else {
-        console.error("Status not expected:", response.status);
-      }
+    const data = await response.json();
+    console.log(data);
 
+    if (response.status === 200) {
+      try {
+        navigate(`/order-confirmation/${data.id}`);
+        console.log("Order placed!");
+      } catch (error) {
+        console.error("Error parsing response data:", error);
+      }
+    } else {
+      console.error("Status not expected:", response.status);
+    }
   };
+
+  const handleSubmit = () => {
+    if( name === '' || phone === '' || address === '' ){
+        alert("All the fields must be completed and the data has not been sent");
+        }
+        else{
+          placeOrder();
+        }
+      };
 
   return (
     <>
@@ -53,7 +61,6 @@ function OrderModal({ order, setOrderModal }) {
         tabIndex={0}
       />
       <div className={styles.orderModalContent}>
-
         <h2>Place Order</h2>
         <form className={styles.form}>
           <div className={styles.formGroup}>
@@ -64,7 +71,7 @@ function OrderModal({ order, setOrderModal }) {
                   e.preventDefault();
                   setName(e.target.value);
                 }}
-                type="text"
+                type="name"
                 id="name"
               />
             </label>
@@ -90,7 +97,7 @@ function OrderModal({ order, setOrderModal }) {
                   e.preventDefault();
                   setAddress(e.target.value);
                 }}
-                type="phone"
+                type="address"
                 id="address"
               />
             </label>
@@ -106,7 +113,7 @@ function OrderModal({ order, setOrderModal }) {
           </button>
           <button
             onClick={() => {
-              placeOrder();
+              handleSubmit();
             }}
             className={styles.orderModalPlaceOrder}
           >
