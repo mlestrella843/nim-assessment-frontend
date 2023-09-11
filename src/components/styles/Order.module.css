@@ -16,7 +16,8 @@
   color: var(--primary-text);
   overflow-y: hidden;
   text-align: center;
-  padding-bottom: 90px;
+  padding-bottom: 130px;
+  padding-top: 40px;
 }
 
 .subContainer h2 {
@@ -39,6 +40,7 @@
   height: 100%;
   width: 100%;
   text-align: center;
+  padding-bottom: 40px;
 }
 
 .order ul {
@@ -87,4 +89,15 @@
   justify-content: space-between;
   align-items: flex-end;
   width: 100%;
+}
+
+h1 {
+  font-family:'Poppins';
+  font-weight: bolder;
+}
+
+h3 {
+  font-family:'Poppins';
+  font-weight: bold;
+  text-align: center;
 }

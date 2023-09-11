@@ -17,9 +17,9 @@ function Menu({ menuItems, order, setOrder }) {
   };
   return (
     <>
-      <div>
+      {/* <div>
         <h2>Menu</h2>
-      </div>
+      </div> */}
       <div className={styles.menu}>
         {menuItems.map((item) => (
           <MenuItem key={item.id} item={item} addItemToOrder={addItemToOrder} />

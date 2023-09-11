@@ -1,3 +1,4 @@
+
 import AppRoutes from "./AppRoutes";
 import Nav from "./components/Nav";
 
@@ -9,5 +10,4 @@ function App() {
     </>
   );
 }
-
 export default App;

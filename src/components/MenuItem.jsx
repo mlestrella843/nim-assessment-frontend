@@ -3,7 +3,7 @@ import React from "react";
 function MenuItem({ item, addItemToOrder }) {
   return (
     <div className="menu-item" key={item.id}>
-      <h3>{item.name}</h3>
+      <h4>{item.name}</h4>
       <p>{item.description}</p>
       <p>${item.price}</p>
 

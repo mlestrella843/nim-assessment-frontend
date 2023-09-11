@@ -8,10 +8,12 @@ function Main() {
   const [menuItems, setMenuItems] = useState([]);
   const [order, setOrder] = useState([]);
   const [orderModal, setOrderModal] = useState(false);
+  // const [confirmOrder, setConfirmOrder] = useState(false);
 
   const getItems = async () => {
     const response = await fetch("/api/menu");
     const data = await response.json();
+    // console.log(data);
     setMenuItems(data);
   };
 
@@ -22,7 +24,11 @@ function Main() {
   return (
     <div className="page">
       {orderModal && <OrderModal order={order} setOrderModal={setOrderModal} />}
-      <h1>Create an order</h1>
+         {/* {orderModal &&  <ConfirmationPage order={order} setOrderModal={setOrderModal} />} */}
+      <h1>MENU</h1>
+      <Menu menuItems={menuItems} setOrder={setOrder} setOrderModal={setOrderModal} />  
+      <h3>Create an Order</h3>
+      
       <div className={styles.container}>
         <div className={styles.subContainer}>
           <Menu menuItems={menuItems} order={order} setOrder={setOrder} />

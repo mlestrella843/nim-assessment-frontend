@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./styles/OrderModal.module.css";
 
 function OrderModal({ order, setOrderModal }) {
@@ -6,6 +7,8 @@ function OrderModal({ order, setOrderModal }) {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
+  const navigate = useNavigate();
+ 
   const placeOrder = async () => {
     const response = await fetch("/api/orders", {
       method: "POST",
@@ -19,9 +22,22 @@ function OrderModal({ order, setOrderModal }) {
         items: order
       })
     });
-    const data = await response.json();
-    console.log(data);
+      const data = await response.json();
+      console.log(data);
+     
+      if (response.status === 200) {
+        try {
+          navigate(`/order-confirmation/${data.id}`);
+          console.log("Order placed!");
+        } catch (error) {
+          console.error("Error parsing response data:", error);
+        }
+      } else {
+        console.error("Status not expected:", response.status);
+      }
+
   };
+
   return (
     <>
       <div
@@ -37,6 +53,7 @@ function OrderModal({ order, setOrderModal }) {
         tabIndex={0}
       />
       <div className={styles.orderModalContent}>
+
         <h2>Place Order</h2>
         <form className={styles.form}>
           <div className={styles.formGroup}>

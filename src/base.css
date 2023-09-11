@@ -27,6 +27,7 @@
   flex-direction: column;
   height: 100%;
   padding: 40px 80px;
+  margin-bottom: 40px;
   background-color: var(--primary-color);
   color: var(--primary-text);
   overflow-y: hidden;
