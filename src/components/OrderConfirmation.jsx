@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import Swal from "sweetalert2";
 
-function OrderConfirmation({order}) {
+function OrderConfirmation({ order }) {
   useEffect(() => {
-    if ({order}) {
+    if ({ order }) {
       Swal.fire(
         `Thank you for your order! ${order.name}`,
         "Please confirm this order on this page",
         "success"
       );
     }
-  },[order]);
+  }, [order]);
 
   return (
     <div className="container">
@@ -29,21 +29,22 @@ function OrderConfirmation({order}) {
         </thead>
         <tbody>
           <tr>
-            <td>Name:{order.name}</td>
-            <td>Address:{order.address}</td>
-            <td>Phone:{order.phone}</td>
+            <td>{order.name}</td>
+            <td>{order.address}</td>
+            <td>{order.phone}</td>
             <td>
               {" "}
               Items:
               {/* <ul> */}
-              {order && order.items.map((item) => (
+              {order &&
+                order.items.map((item) => (
                   <li key={item.item.id}>
                     {item.item.name} {item.quantity}
                   </li>
                 ))}
               {/* </ul>     */}
             </td>
-            <td>Order id:{order.id}</td>
+            <td>{order.id}</td>
           </tr>
         </tbody>
       </table>

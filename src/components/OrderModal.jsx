@@ -4,10 +4,41 @@ import styles from "./styles/OrderModal.module.css";
 
 function OrderModal({ order, setOrderModal }) {
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState();
   const [address, setAddress] = useState("");
 
   const navigate = useNavigate();
+
+  const [isValid, setIsValid] = useState(true);
+
+  const [isValidPhone, setIsValidPhone] = useState(true);
+
+  
+ 
+  const handleChangeName = (e) => {
+    const pattern = /^[A-Za-z\s]+$/;
+    const isValidInput = pattern.test(e.target.value);
+    if(isValidInput) {
+      setName(e.target.value);
+      setIsValid(isValidInput);
+    }
+    else setIsValid(isValidInput);
+  };
+
+  const handleChangePhone = (e) => { 
+    const pattern = /^\(\d{3}\)\d{3}-\d{4}$/;
+    const isValidPattern = pattern.test(e.target.value);
+    console.log("Esta es la entrada", e.target.value)
+    console.log("Esta es la respuesta de la variable cleanedValue", isValidPattern);
+    if(isValidPattern) {
+      setPhone(e.target.value);
+      setIsValidPhone(isValidPattern);
+    }
+    else{
+      setIsValidPhone(isValidPattern);
+    }
+  };
+
 
   const placeOrder = async () => {
     const response = await fetch("/api/orders", {
@@ -38,13 +69,12 @@ function OrderModal({ order, setOrderModal }) {
   };
 
   const handleSubmit = () => {
-    if( name === '' || phone === '' || address === '' ){
-        alert("All the fields must be completed and the data has not been sent");
-        }
-        else{
-          placeOrder();
-        }
-      };
+    if (name === "" || phone === "" || address === "") {
+      alert("All the fields must be completed and the data has not been sent");
+    } else {
+      placeOrder();
+    }
+  };
 
   return (
     <>
@@ -66,29 +96,35 @@ function OrderModal({ order, setOrderModal }) {
           <div className={styles.formGroup}>
             <label htmlFor="name">
               Name
-              <input
-                onChange={(e) => {
-                  e.preventDefault();
-                  setName(e.target.value);
-                }}
-                type="name"
-                id="name"
-              />
+             <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={handleChangeName}
+                  style={{ borderColor: isValid ? 'initial' : 'red' }}
+             />
+                 {!isValid && (
+                 <p style={{ color: 'red' }}>Please enter a valid name (only letters and spaces).</p>
+            )}
             </label>
           </div>
+
           <div className={styles.formGroup}>
             <label htmlFor="phone">
               Phone
               <input
-                onChange={(e) => {
-                  e.preventDefault();
-                  setPhone(e.target.value);
-                }}
-                type="phone"
-                id="phone"
-              />
+                  type="phone"
+                  id="phone"
+                  value={phone} // Mostrar el número de teléfono formateado en el campo de entrada.
+                  onChange={handleChangePhone}
+                  style={{ borderColor: isValidPhone ? 'initial' : 'red' }}
+                />
+                {!isValidPhone && (
+                  <p style={{ color: 'red' }}>Please enter a valid phone number.</p>
+                )}
             </label>
           </div>
+
           <div className={styles.formGroup}>
             <label htmlFor="address">
               Address
