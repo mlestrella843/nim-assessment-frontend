@@ -10,47 +10,37 @@ function OrderModal({ order, setOrderModal }) {
   const navigate = useNavigate();
 
   const [isValid, setIsValid] = useState(true);
- 
+
   const handleChangeName = (e) => {
+    const inputName = e.target.value.trim();
     const pattern = /^[A-Za-z\s]+$/;
-    const isValidInput = pattern.test(e.target.value);
-    if(isValidInput) {
+    const isValidInput = pattern.test(inputName);
+    if (isValidInput) {
       setName(e.target.value);
       setIsValid(isValidInput);
+    } else {
+      setIsValid(isValidInput);
+      setName("");
     }
-    else setIsValid(isValidInput);
   };
-
 
   const [isValidPhone, setIsValidPhone] = useState(true);
-  // const [isValidNumber, setIsValidNumber] = useState(false);
- 
+
   const handleChange = (e) => {
-    let formatted = "";
     const pattern = /^[0-9]+$/;
-    const cleanedValue = e.target.value.replace(/\D/g, ''); 
-
-    if ( (pattern.test(cleanedValue) ) && (cleanedValue.length === 10) ) {
-      formatted = `(${cleanedValue.slice(0, 3)}) ${cleanedValue.slice(3,6)}-${cleanedValue.slice(6, 10)}`;
-      setIsValidPhone(true);
-      // setIsValidNumber(true);
+    const cleanedValue = e.target.value.replace(/\D/g, "");
+    if (pattern.test(cleanedValue) && cleanedValue.length === 10) {
+      const formatted = `(${cleanedValue.slice(0, 3)}) ${cleanedValue.slice(
+        3,
+        6
+      )}-${cleanedValue.slice(6, 10)}`;
       setPhone(formatted);
-      } 
-    else {
-      // setIsValidNumber(false);
+      setIsValidPhone(true);
+    } else {
       setIsValidPhone(false);
-      setPhone(e.target.value);
       console.log("El numero entrado no es valido");
-      formatted = cleanedValue;   
-    }    
-       
+    }
   };
-
-  
-  
-
-
-
 
   const placeOrder = async () => {
     const response = await fetch("/api/orders", {
@@ -108,46 +98,38 @@ function OrderModal({ order, setOrderModal }) {
           <div className={styles.formGroup}>
             <label htmlFor="name">
               Name
-             <input
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={ handleChangeName}
-                  style={{ borderColor: isValid ? 'initial' : 'red' }}
-             />
-                 {!isValid && (
-                 <p style={{ color: 'red' }}>Please enter a valid name (only letters and spaces).</p>
-            )}
+              <input
+                type="text"
+                autoComplete="off"
+                id="name"
+                value={name}
+                onChange={handleChangeName}
+                style={{ borderColor: isValid ? "initial" : "red" }}
+              />
+              {!isValid && (
+                <p style={{ color: "red" }}>
+                  Please enter a valid name (only letters and spaces).
+                </p>
+              )}
             </label>
           </div>
-
-
-
-
-
-
           <div className={styles.formGroup}>
             <label htmlFor="phone">
               Phone
-            <input
+              <input
                 type="text"
                 id="phone"
                 value={phone}
                 onChange={handleChange}
-                style={{ borderColor: isValid ? 'initial' : 'red' }}
+                style={{ borderColor: isValidPhone ? "initial" : "red" }}
               />
               {!isValidPhone && (
-                <p style={{ color: 'red' }}>Please enter a valid 10-digit phone number.</p>
+                <p style={{ color: "red" }}>
+                  Please enter a valid 10-digit phone number.
+                </p>
               )}
             </label>
           </div>
-
-
-
-
-
-
-
           <div className={styles.formGroup}>
             <label htmlFor="address">
               Address
@@ -162,7 +144,6 @@ function OrderModal({ order, setOrderModal }) {
             </label>
           </div>
         </form>
-
         <div className={styles.orderModalButtons}>
           <button
             className={styles.orderModalClose}
@@ -183,5 +164,4 @@ function OrderModal({ order, setOrderModal }) {
     </>
   );
 }
-
 export default OrderModal;

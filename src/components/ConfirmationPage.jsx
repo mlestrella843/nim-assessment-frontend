@@ -17,7 +17,7 @@ function ConfirmationPage() {
       }
     };
     getOrderById();
-  }, []);
+  }, [id]);
 
   // console.log("Info ByID variable", order);
 
