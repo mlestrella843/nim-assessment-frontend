@@ -4,11 +4,44 @@ import styles from "./styles/OrderModal.module.css";
 
 function OrderModal({ order, setOrderModal }) {
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState();
   const [address, setAddress] = useState("");
 
   const navigate = useNavigate();
- 
+
+  const [isValid, setIsValid] = useState(true);
+
+  const handleChangeName = (e) => {
+    const inputName = e.target.value.trim();
+    const pattern = /^[A-Za-z\s]+$/;
+    const isValidInput = pattern.test(inputName);
+    if (isValidInput) {
+      setName(e.target.value);
+      setIsValid(isValidInput);
+    } else {
+      setIsValid(isValidInput);
+      setName("");
+    }
+  };
+
+  const [isValidPhone, setIsValidPhone] = useState(true);
+
+  const handleChange = (e) => {
+    const pattern = /^[0-9]+$/;
+    const cleanedValue = e.target.value.replace(/\D/g, "");
+    if (pattern.test(cleanedValue) && cleanedValue.length === 10) {
+      const formatted = `(${cleanedValue.slice(0, 3)}) ${cleanedValue.slice(
+        3,
+        6
+      )}-${cleanedValue.slice(6, 10)}`;
+      setPhone(formatted);
+      setIsValidPhone(true);
+    } else {
+      setIsValidPhone(false);
+      console.log("El numero entrado no es valido");
+    }
+  };
+
   const placeOrder = async () => {
     const response = await fetch("/api/orders", {
       method: "POST",
@@ -22,20 +55,27 @@ function OrderModal({ order, setOrderModal }) {
         items: order
       })
     });
-      const data = await response.json();
-      console.log(data);
-     
-      if (response.status === 200) {
-        try {
-          navigate(`/order-confirmation/${data.id}`);
-          console.log("Order placed!");
-        } catch (error) {
-          console.error("Error parsing response data:", error);
-        }
-      } else {
-        console.error("Status not expected:", response.status);
-      }
+    const data = await response.json();
+    console.log(data);
 
+    if (response.status === 200) {
+      try {
+        navigate(`/order-confirmation/${data.id}`);
+        console.log("Order placed!");
+      } catch (error) {
+        console.error("Error parsing response data:", error);
+      }
+    } else {
+      console.error("Status not expected:", response.status);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (name === "" || phone === "" || address === "") {
+      alert("All the fields must be completed and the data has not been sent");
+    } else {
+      placeOrder();
+    }
   };
 
   return (
@@ -53,33 +93,41 @@ function OrderModal({ order, setOrderModal }) {
         tabIndex={0}
       />
       <div className={styles.orderModalContent}>
-
         <h2>Place Order</h2>
         <form className={styles.form}>
           <div className={styles.formGroup}>
             <label htmlFor="name">
               Name
               <input
-                onChange={(e) => {
-                  e.preventDefault();
-                  setName(e.target.value);
-                }}
                 type="text"
+                autoComplete="off"
                 id="name"
+                value={name}
+                onChange={handleChangeName}
+                style={{ borderColor: isValid ? "initial" : "red" }}
               />
+              {!isValid && (
+                <p style={{ color: "red" }}>
+                  Please enter a valid name (only letters and spaces).
+                </p>
+              )}
             </label>
           </div>
           <div className={styles.formGroup}>
             <label htmlFor="phone">
               Phone
               <input
-                onChange={(e) => {
-                  e.preventDefault();
-                  setPhone(e.target.value);
-                }}
-                type="phone"
+                type="text"
                 id="phone"
+                value={phone}
+                onChange={handleChange}
+                style={{ borderColor: isValidPhone ? "initial" : "red" }}
               />
+              {!isValidPhone && (
+                <p style={{ color: "red" }}>
+                  Please enter a valid 10-digit phone number.
+                </p>
+              )}
             </label>
           </div>
           <div className={styles.formGroup}>
@@ -90,13 +138,12 @@ function OrderModal({ order, setOrderModal }) {
                   e.preventDefault();
                   setAddress(e.target.value);
                 }}
-                type="phone"
+                type="address"
                 id="address"
               />
             </label>
           </div>
         </form>
-
         <div className={styles.orderModalButtons}>
           <button
             className={styles.orderModalClose}
@@ -106,7 +153,7 @@ function OrderModal({ order, setOrderModal }) {
           </button>
           <button
             onClick={() => {
-              placeOrder();
+              handleSubmit();
             }}
             className={styles.orderModalPlaceOrder}
           >
@@ -117,5 +164,4 @@ function OrderModal({ order, setOrderModal }) {
     </>
   );
 }
-
 export default OrderModal;
