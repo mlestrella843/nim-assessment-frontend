@@ -10,10 +10,6 @@ function OrderModal({ order, setOrderModal }) {
   const navigate = useNavigate();
 
   const [isValid, setIsValid] = useState(true);
-
-  const [isValidPhone, setIsValidPhone] = useState(true);
-
-  
  
   const handleChangeName = (e) => {
     const pattern = /^[A-Za-z\s]+$/;
@@ -25,19 +21,35 @@ function OrderModal({ order, setOrderModal }) {
     else setIsValid(isValidInput);
   };
 
-  const handleChangePhone = (e) => { 
-    const pattern = /^\(\d{3}\)\d{3}-\d{4}$/;
-    const isValidPattern = pattern.test(e.target.value);
-    console.log("Esta es la entrada", e.target.value)
-    console.log("Esta es la respuesta de la variable cleanedValue", isValidPattern);
-    if(isValidPattern) {
+
+  const [isValidPhone, setIsValidPhone] = useState(true);
+  // const [isValidNumber, setIsValidNumber] = useState(false);
+ 
+  const handleChange = (e) => {
+    let formatted = "";
+    const pattern = /^[0-9]+$/;
+    const cleanedValue = e.target.value.replace(/\D/g, ''); 
+
+    if ( (pattern.test(cleanedValue) ) && (cleanedValue.length === 10) ) {
+      formatted = `(${cleanedValue.slice(0, 3)}) ${cleanedValue.slice(3,6)}-${cleanedValue.slice(6, 10)}`;
+      setIsValidPhone(true);
+      // setIsValidNumber(true);
+      setPhone(formatted);
+      } 
+    else {
+      // setIsValidNumber(false);
+      setIsValidPhone(false);
       setPhone(e.target.value);
-      setIsValidPhone(isValidPattern);
-    }
-    else{
-      setIsValidPhone(isValidPattern);
-    }
+      console.log("El numero entrado no es valido");
+      formatted = cleanedValue;   
+    }    
+       
   };
+
+  
+  
+
+
 
 
   const placeOrder = async () => {
@@ -100,7 +112,7 @@ function OrderModal({ order, setOrderModal }) {
                   type="text"
                   id="name"
                   value={name}
-                  onChange={handleChangeName}
+                  onChange={ handleChangeName}
                   style={{ borderColor: isValid ? 'initial' : 'red' }}
              />
                  {!isValid && (
@@ -109,21 +121,32 @@ function OrderModal({ order, setOrderModal }) {
             </label>
           </div>
 
+
+
+
+
+
           <div className={styles.formGroup}>
             <label htmlFor="phone">
               Phone
-              <input
-                  type="phone"
-                  id="phone"
-                  value={phone} // Mostrar el número de teléfono formateado en el campo de entrada.
-                  onChange={handleChangePhone}
-                  style={{ borderColor: isValidPhone ? 'initial' : 'red' }}
-                />
-                {!isValidPhone && (
-                  <p style={{ color: 'red' }}>Please enter a valid phone number.</p>
-                )}
+            <input
+                type="text"
+                id="phone"
+                value={phone}
+                onChange={handleChange}
+                style={{ borderColor: isValid ? 'initial' : 'red' }}
+              />
+              {!isValidPhone && (
+                <p style={{ color: 'red' }}>Please enter a valid 10-digit phone number.</p>
+              )}
             </label>
           </div>
+
+
+
+
+
+
 
           <div className={styles.formGroup}>
             <label htmlFor="address">
