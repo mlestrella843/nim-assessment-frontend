@@ -20,7 +20,7 @@ function OrderConfirmation({ order }) {
       <table className="table table-sm">
         <thead>
           <tr>
-           <th>Order Id</th>
+            <th>Order Id</th>
             <th>Name</th>
             <th>Phone</th>
             <th>Address</th>
@@ -32,7 +32,7 @@ function OrderConfirmation({ order }) {
             <td>{order.id}</td>
             <td>{order.name}</td>
             <td>{order.phone}</td>
-            <td>{order.address}</td>        
+            <td>{order.address}</td>
             <td>
               {" "}
               Items:
@@ -42,7 +42,7 @@ function OrderConfirmation({ order }) {
                     {item.item.name} {item.quantity}
                   </li>
                 ))}
-            </td>       
+            </td>
           </tr>
         </tbody>
       </table>
